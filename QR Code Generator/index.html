@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+    background-color: #f5f5f5; /* Light gray background */
+        }
+
+input {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px; /* Rounded corners */
+    transition: border-color 0.3s ease; /* Smooth transition on border color change */
+}
+
+input:focus {
+    outline: none; /* Remove outline on focus */
+    border-color: #66afe9; /* Change border color on focus */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth transition on background color change */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+#qrCode {
+    margin-top: 25px;
+}
+
+/* Animation for QR code image */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease;
+}
+    </style>
+    
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <div id="qrCode">
+        <!-- QR Code will be displayed here -->
+    </div>
+    <button id="downloadButton" style="display: none;" onclick="downloadQRCode()">Download QR Code</button>
+
+    <script>
+        function generateQRCode() {
+    const url = document.getElementById('urlInput').value.trim(); // Trim whitespace from input
+
+    // Regular expression to validate URL format
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+
+    // Check if the URL is valid
+    if (!urlRegex.test(url)) {
+        alert('Please enter a valid URL'); // Display alert if URL is invalid
+        return;
+    }
+
+    fetch('/generate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.qrCodeUrl) {
+            const qrCodeImg = document.createElement('img');
+            qrCodeImg.src = data.qrCodeUrl;
+            qrCodeImg.id = 'qrCodeImg';
+            const qrCodeDiv = document.getElementById('qrCode');
+            qrCodeDiv.innerHTML = '';
+            qrCodeDiv.appendChild(qrCodeImg);
+            document.getElementById('downloadButton').style.display = 'block';
+        } else {
+            alert('Failed to generate QR code.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while generating the QR code.');
+    });
+}
+
+function downloadQRCode() {
+    const qrCodeImg = document.getElementById('qrCodeImg');
+    const link = document.createElement('a');
+    link.href = qrCodeImg.src;
+    link.download = 'qr-code.png';
+    link.click();
+}
+    </script>
+</body>
+</html>
