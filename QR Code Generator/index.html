@@ -9,44 +9,44 @@
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 50px;
-    background-color: #f5f5f5; /* Light gray background */
+    background-color: #f5f5f5; 
         }
 
 input {
     padding: 10px;
     font-size: 16px;
     margin: 10px;
-    border: 1px solid #ccc; /* Gray border */
-    border-radius: 5px; /* Rounded corners */
-    transition: border-color 0.3s ease; /* Smooth transition on border color change */
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    transition: border-color 0.3s ease; 
 }
 
 input:focus {
-    outline: none; /* Remove outline on focus */
-    border-color: #66afe9; /* Change border color on focus */
+    outline: none; 
+    border-color: #66afe9; 
 }
 
 button {
     padding: 10px 20px;
     font-size: 16px;
     margin: 10px;
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: background-color 0.3s ease; /* Smooth transition on background color change */
+    background-color: #4CAF50; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
 }
 
 button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049; 
 }
 
 #qrCode {
     margin-top: 25px;
 }
 
-/* Animation for QR code image */
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -63,20 +63,17 @@ button:hover {
     <input type="text" id="urlInput" placeholder="Enter URL">
     <button onclick="generateQRCode()">Generate QR Code</button>
     <div id="qrCode">
-        <!-- QR Code will be displayed here -->
+        <!-- QR Code display -->
     </div>
     <button id="downloadButton" style="display: none;" onclick="downloadQRCode()">Download QR Code</button>
 
     <script>
         function generateQRCode() {
-    const url = document.getElementById('urlInput').value.trim(); // Trim whitespace from input
-
-    // Regular expression to validate URL format
+    const url = document.getElementById('urlInput').value.trim(); 
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
-    // Check if the URL is valid
     if (!urlRegex.test(url)) {
-        alert('Please enter a valid URL'); // Display alert if URL is invalid
+        alert('Please enter a valid URL'); 
         return;
     }
 
